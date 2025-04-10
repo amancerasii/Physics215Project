@@ -1,0 +1,5 @@
+name: 215Project
+channels:
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+prefix: /opt/anaconda3/envs/215Project
