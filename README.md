@@ -20,3 +20,6 @@ http://arxiv.org/pdf/1202.1056
 Michael McKerns and Michael Aivazis,
 "pathos: a framework for heterogeneous computing", 2010- ;
 https://uqfoundation.github.io/project/pathos
+
+Ising model with numba integration tutorial
+https://www.youtube.com/watch?v=K--1hlv9yv0&ab_channel=Mr.PSolver
