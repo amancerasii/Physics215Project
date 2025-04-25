@@ -3,8 +3,9 @@ import matplotlib.pyplot as plt
 import numba
 from numba import njit
 from scipy.ndimage import convolve, generate_binary_structure
+import time
 
-N = 20
+N = 50
 
 # Create Random Negative Lattice
 init_random = np.random.random((N,N))
@@ -63,7 +64,8 @@ def metropolis(spin_arr, times, BJ, energy):
         net_energy[t] = energy
 
     return net_spins, net_energy
-    
-spins, energies = metropolis(lattice_n, 100000, 0.7, get_energy(lattice_n))
-plt.plot(energies)
-plt.show()
+
+tstart = time.perf_counter()
+spins, energies = metropolis(lattice_n, 1000000, 0.7, get_energy(lattice_n))
+calctime = time.perf_counter() - tstart
+print(calctime)
