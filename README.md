@@ -23,3 +23,23 @@ https://uqfoundation.github.io/project/pathos
 
 Ising model with numba integration tutorial
 https://www.youtube.com/watch?v=K--1hlv9yv0&ab_channel=Mr.PSolver
+
+
+Things to implement:
+
+# Metropolis Runplan up to phase transition diagram
+## Variables
+N - lattice size
+t - number of time steps per run
+r - number of runs (to average over)
+npoints - number of steady state points to average
+B values - \(\beta = 1/k_Bt \)
+## Steps
+
+
+# Speed up schemes:
+basic njit
+`@ngit(nopython=True)`
+
+# Standard Test Configuration
+N = 50

@@ -5,34 +5,19 @@ from numba import njit
 from scipy.ndimage import convolve, generate_binary_structure
 import time
 
-N = 50
-
-# Create Random Negative Lattice
-init_random = np.random.random((N,N))
-lattice_n = np.zeros((N,N))
-lattice_n[init_random >= 0.75] = 1
-lattice_n[init_random < 0.75] = -1
-
-# Create Random Positive Lattice
-init_random = np.random.random((N,N))
-lattice_p = np.zeros((N,N))
-lattice_p[init_random >= 0.25] = 1
-lattice_p[init_random < 0.25] = -1
-
 def get_energy(lattice):
     kern = generate_binary_structure(2,2)
     kern[1][1] = False
     arr = -lattice * convolve(lattice, kern, mode='constant')
     return arr.sum()
 
-@numba.njit("UniTuple(f8[:], 2)(f8[:,:], i8, f8, f8)", nopython=True, nogil=True)
-
+@njit(nopython=True)
 def metropolis(spin_arr, times, BJ, energy):
     spin_arr = spin_arr.copy()
-    net_spins = np.zeros(times-1)
-    net_energy = np.zeros(times-1)
+    net_spins = np.zeros(times)
+    net_energy = np.zeros(times)
 
-    for t in range(0,times-1):
+    for t in range(0,times):
         # pick random point on array and flip spin
         x = np.random.randint(0,N)
         y = np.random.randint(0,N)
@@ -65,7 +50,40 @@ def metropolis(spin_arr, times, BJ, energy):
 
     return net_spins, net_energy
 
+
+N = 50
+t = 500000
+runs = 100
+Bvals = [0.44]
+tmeasurements = 10
+
 tstart = time.perf_counter()
-spins, energies = metropolis(lattice_n, 1000000, 0.7, get_energy(lattice_n))
+
+for B in Bvals:
+    tspins = np.zeros(t)
+    for r in range(0,runs):
+        np.random.seed(r)
+        # Create Random Negative Lattice
+        init_random = np.random.random((N,N))
+        lattice_n = np.zeros((N,N))
+        lattice_n[init_random >= 0.75] = 1
+        lattice_n[init_random < 0.75] = -1
+
+        # Create Random Positive Lattice
+        init_random = np.random.random((N,N))
+        lattice_p = np.zeros((N,N))
+        lattice_p[init_random >= 0.25] = 1
+        lattice_p[init_random < 0.25] = -1
+
+        spins, energies = metropolis(lattice_n, t, B, get_energy(lattice_n))
+        tspins = tspins + spins
+        # print()
+        # print(spins)
+        # print(tspins)
+
+    plt.plot(tspins/runs,label=str(B))
+
 calctime = time.perf_counter() - tstart
 print(calctime)
+plt.legend()
+plt.show()
