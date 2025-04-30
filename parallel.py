@@ -9,4 +9,6 @@ def f(x):
 
 if __name__ == '__main__':
     with Pool(5) as p:
-        print(p.map(f, [1, 2, 3, 4, 6, 7, 8, 9]))
+        val = p.map(f, [1, 2, 3, 4, 6, 7, 8, 9])
+        print(val)
+    print(2*val)

@@ -4,6 +4,7 @@ import numba
 from numba import njit
 from scipy.ndimage import convolve, generate_binary_structure
 import time
+from multiprocessing import Pool
 
 def get_energy(lattice):
     kern = generate_binary_structure(2,2)
@@ -51,7 +52,13 @@ def metropolis(spin_arr, times, BJ, energy,N):
     return net_spins, net_energy
 
 def isingRun(seed):
-    np.random.seed(r)
+
+    N = 50
+    t = 1000000
+    B = 0.44
+
+    np.random.seed(seed)
+
     # Create Random Negative Lattice
     init_random = np.random.random((N,N))
     lattice_n = np.zeros((N,N))
@@ -62,24 +69,18 @@ def isingRun(seed):
     return spins, energies
 
 
-runs = 10
-tstart = time.perf_counter()
+if __name__ == '__main__':
+    runs = 10
 
-N = 50
-t = 1000000
-Bvals = [0.44]
-tmeasurements = 10
+    tstart = time.perf_counter()
+    with Pool(5) as p:
+        val = p.map(isingRun, np.arange(0,20))
 
-
-for B in Bvals:
-    tspins = np.zeros(t)
-    for r in range(0,runs):
-        spins, energies = isingRun(r)
-        tspins = tspins + spins
-
-    plt.plot(tspins/runs,label=str(B))
-
-calctime = time.perf_counter() - tstart
-print(calctime)
-plt.legend()
-plt.show()
+    calctime = time.perf_counter() - tstart
+    print(calctime)
+    
+    tspins = np.zeros(1000000)
+    for i in range(runs):
+        tspins = tspins + val[i][0]
+    plt.plot(tspins/runs)
+    plt.show()

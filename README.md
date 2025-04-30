@@ -43,3 +43,6 @@ basic njit
 
 # Standard Test Configuration
 N = 50
+t = 1000000
+runs = 100
+Bvals = 0.44
