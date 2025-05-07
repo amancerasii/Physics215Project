@@ -46,3 +46,22 @@ N = 50
 t = 1000000
 runs = 100
 Bvals = 0.44
+
+# Inputs:
+filename
+N
+t
+T
+runs
+datapoints
+
+# codes
+separate each code
+
+ising (base)
+ising_njit
+ising_parallel
+ising_njitparallel
+
+
+

@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import numba
 from numba import njit
 from scipy.ndimage import convolve, generate_binary_structure
 import time
 from multiprocessing import Pool
+
+tstart = time.perf_counter()
 
 def get_energy(lattice):
     kern = generate_binary_structure(2,2)
@@ -53,9 +54,6 @@ def metropolis(spin_arr, times, BJ, energy,N):
 
 def isingRun(seed):
 
-    N = 50
-    t = 1000000
-    B = 0.44
 
     np.random.seed(seed)
 
@@ -65,22 +63,39 @@ def isingRun(seed):
     lattice_n[init_random >= 0.5] = 1
     lattice_n[init_random < 0.5] = -1
 
-    spins, energies = metropolis(lattice_n, t, B, get_energy(lattice_n),N)
+    if mode == 'base' or mode == 'parallel':
+        spins, energies = metropolis(lattice_n, t, B, get_energy(lattice_n),N)
+    elif mode == 'njit' or mode == 'njitparallel':
+        spins, energies = metropolisnjit(lattice_n, t, B, get_energy(lattice_n),N)
+
     return spins, energies
 
+###############################################################################
+
+t = 100000
+runs = 120
+N = 10
+B = 1/2
+cores = 5
 
 if __name__ == '__main__':
-    runs = 10
+    # tspins = np.zeros(t)
+    # for r in range(runs):
+    #     spins, energies = isingRun(r)
+    #     tspins = tspins + spins
 
-    tstart = time.perf_counter()
-    with Pool(5) as p:
-        val = p.map(isingRun, np.arange(0,20))
+    with Pool(cores) as p:
+        val = p.map(isingRun, np.arange(0,runs))
 
-    calctime = time.perf_counter() - tstart
-    print(calctime)
-    
-    tspins = np.zeros(1000000)
-    for i in range(runs):
-        tspins = tspins + val[i][0]
-    plt.plot(tspins/runs)
-    plt.show()
+        
+        tspins = np.zeros(t)
+        tenergy = np.zeros(t)
+        for i in range(runs):
+            tspins = tspins + val[i][0]
+            tenergy = tenergy + val[i][1]
+
+        calctime = time.perf_counter() - tstart
+        print('ngit_parallel',calctime)
+        plt.plot(tspins)
+        plt.plot(tenergy)
+        plt.show()
