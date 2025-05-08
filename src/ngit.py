@@ -5,7 +5,6 @@ from numba import njit
 import datetime
 import time
 from multiprocessing import Pool
-import os
 import configparser
 
 tstart = time.perf_counter()
@@ -88,42 +87,33 @@ filename = str(config['Settings']['file name'])
 
 Tvals = np.linspace(Tstart,Tend,Tnum)
 
-if __name__ == '__main__':
-    # tspins = np.zeros(t)
-    # for r in range(runs):
-    #     spins, energies = isingRun(r)
-    #     tspins = tspins + spins
 
-    spindata = np.zeros((sspoints+1,Tnum))
-    energydata = np.zeros((sspoints+1,Tnum))
+spindata = np.zeros((sspoints+1,Tnum))
+energydata = np.zeros((sspoints+1,Tnum))
 
-    for j in range(Tnum):
-        T = Tvals[j]
-        print("T = ",T)
-        B = 1/T
+for j in range(Tnum):
+    T = Tvals[j]
+    print("T = ",T)
+    B = 1/T
 
-        spindata[0,j] = T
-        energydata[0,j] = T
+    spindata[0,j] = T
+    energydata[0,j] = T
 
-        with Pool(cores) as p:
-            args = [[B,i] for i in range(runs)]
-            val = p.map(isingRun, args)
-            
-            tspins = np.zeros(sspoints)
-            tenergy = np.zeros(sspoints)
+    tspins = np.zeros(sspoints)
+    tenergy = np.zeros(sspoints)
 
-            for i in range(runs):
-                tspins = tspins + val[i][0]
-                tenergy = tenergy + val[i][1]
+    for r in range(runs):
+        spins, energies = isingRun([B,r])
+        tspins = tspins + spins
 
-            spindata[1:,j] = tspins
-            energydata[1:,j] = tenergy
+    spindata[1:,j] = tspins
+    energydata[1:,j] = tenergy
 
-    calctime = time.perf_counter() - tstart
-    print(filename,calctime)
+calctime = time.perf_counter() - tstart
+print(filename,calctime)
 
-    np.savetxt("../data/"+filename+"_ngitparallel_spin.txt",spindata,'%f')
-    np.savetxt("../data/"+filename+"_ngitparallel_energy.txt",energydata,'%f')
+np.savetxt("../data/"+filename+"_ngit_spin.txt",spindata,'%f')
+np.savetxt("../data/"+filename+"_ngit_energy.txt",energydata,'%f')
 
-    with open("../data/times.txt", "a") as f:
-        f.write(filename+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
+with open("../data/times.txt", "a") as f:
+    f.write(filename+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")

@@ -2,5 +2,5 @@ import configparser
 
 config = configparser.ConfigParser()
 config.sections()
-config.read('example.ini')
-print(config['Settings']['lattice size'])
+config.read('config.ini')
+print(config.sections()[0])

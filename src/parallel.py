@@ -1,11 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import convolve, generate_binary_structure
-from numba import njit
 import datetime
 import time
 from multiprocessing import Pool
-import os
 import configparser
 
 tstart = time.perf_counter()
@@ -16,7 +14,6 @@ def get_energy(lattice):
     arr = -lattice * convolve(lattice, kern, mode='constant')
     return arr.sum()
 
-@njit(nopython=True)
 def metropolis(spin_arr, times, BJ, energy,N):
     spin_arr = spin_arr.copy()
     net_spins = np.zeros(sspoints)
@@ -122,8 +119,8 @@ if __name__ == '__main__':
     calctime = time.perf_counter() - tstart
     print(filename,calctime)
 
-    np.savetxt("../data/"+filename+"_ngitparallel_spin.txt",spindata,'%f')
-    np.savetxt("../data/"+filename+"_ngitparallel_energy.txt",energydata,'%f')
+    np.savetxt("../data/"+filename+"_parallel_spin.txt",spindata,'%f')
+    np.savetxt("../data/"+filename+"_parallel_energy.txt",energydata,'%f')
 
     with open("../data/times.txt", "a") as f:
         f.write(filename+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")

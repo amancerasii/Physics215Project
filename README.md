@@ -52,6 +52,9 @@ filename
 N
 t
 T
+Tstart
+Tend
+num T
 runs
 datapoints
 
