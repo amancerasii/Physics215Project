@@ -51,7 +51,7 @@ def metropolis(spin_arr, times, BJ, energy,N):
             energy += dE
        
         if (t >= times-sspoints):
-            net_spins[t-times+sspoints] = spin_arr.sum()
+            net_spins[t-times+sspoints] = abs(spin_arr.sum())
             net_energy[t-times+sspoints] = energy
 
     return net_spins, net_energy
@@ -61,10 +61,12 @@ def isingRun(args):
     np.random.seed(args[1])
 
     # Create Random Negative Lattice
-    init_random = np.random.random((N,N))
-    lattice_n = np.zeros((N,N))
-    lattice_n[init_random >= 0.5] = 1
-    lattice_n[init_random < 0.5] = -1
+    # init_random = np.random.random((N,N))
+    # lattice_n = np.zeros((N,N))
+
+    # lattice_n[init_random >= 0.5] = 1
+    # lattice_n[init_random < 0.5] = -1
+    lattice_n = np.ones((N,N))
 
     spins, energies = metropolis(lattice_n, t, B, get_energy(lattice_n),N)
 
@@ -116,8 +118,8 @@ if __name__ == '__main__':
                 tspins = tspins + val[i][0]
                 tenergy = tenergy + val[i][1]
 
-            spindata[1:,j] = tspins
-            energydata[1:,j] = tenergy
+            spindata[1:,j] = tspins/runs
+            energydata[1:,j] = tenergy/runs
 
     calctime = time.perf_counter() - tstart
     print(filename,calctime)
@@ -126,4 +128,4 @@ if __name__ == '__main__':
     np.savetxt("../data/"+filename+"_ngitparallel_energy.txt",energydata,'%f')
 
     with open("../data/times.txt", "a") as f:
-        f.write(filename+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
+        f.write(filename+"_ngitparallel"+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")

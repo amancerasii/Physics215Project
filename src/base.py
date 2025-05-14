@@ -77,7 +77,6 @@ config.read('../config.ini')
 N = int(config['Settings']['lattice size'])
 t = int(config['Settings']['time steps'])
 runs = int(config['Settings']['runs'])
-cores = int(config['Settings']['cores'])
 Tstart = float(config['Settings']['start T'])
 Tend = float(config['Settings']['end T'])
 Tnum = int(config['Settings']['number of T'])
@@ -104,6 +103,7 @@ for j in range(Tnum):
     for r in range(runs):
         spins, energies = isingRun([B,r])
         tspins = tspins + spins
+        tenergy = tenergy + energies
 
     spindata[1:,j] = tspins
     energydata[1:,j] = tenergy
@@ -115,4 +115,4 @@ np.savetxt("../data/"+filename+"_base_spin.txt",spindata,'%f')
 np.savetxt("../data/"+filename+"_base_energy.txt",energydata,'%f')
 
 with open("../data/times.txt", "a") as f:
-    f.write(filename+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
+    f.write(filename+"_base"+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")

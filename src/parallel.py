@@ -123,4 +123,4 @@ if __name__ == '__main__':
     np.savetxt("../data/"+filename+"_parallel_energy.txt",energydata,'%f')
 
     with open("../data/times.txt", "a") as f:
-        f.write(filename+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
+        f.write(filename+"_parallel"+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
