@@ -48,7 +48,7 @@ def metropolis(spin_arr, times, BJ, energy,N):
             energy += dE
        
         if (t >= times-sspoints):
-            net_spins[t-times+sspoints] = spin_arr.sum()
+            net_spins[t-times+sspoints] = abs(spin_arr.sum())
             net_energy[t-times+sspoints] = energy
 
     return net_spins, net_energy
@@ -57,11 +57,13 @@ def isingRun(args):
     B = args[0]
     np.random.seed(args[1])
 
-    # Create Random Negative Lattice
-    init_random = np.random.random((N,N))
-    lattice_n = np.zeros((N,N))
-    lattice_n[init_random >= 0.5] = 1
-    lattice_n[init_random < 0.5] = -1
+     # Create Random Negative Lattice
+    # init_random = np.random.random((N,N))
+    # lattice_n = np.zeros((N,N))
+
+    # lattice_n[init_random >= 0.5] = 1
+    # lattice_n[init_random < 0.5] = -1
+    lattice_n = np.ones((N,N))
 
     spins, energies = metropolis(lattice_n, t, B, get_energy(lattice_n),N)
 
