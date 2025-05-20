@@ -75,7 +75,6 @@ def isingRun(args):
 ###############################################################################
 
 config = configparser.ConfigParser()
-config.sections()
 config.read('../config.ini')
 
 N = int(config['Settings']['lattice size'])
