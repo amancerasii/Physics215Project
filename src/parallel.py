@@ -121,8 +121,11 @@ if __name__ == '__main__':
     calctime = time.perf_counter() - tstart
     print(filename,calctime)
 
-    np.savetxt("../data/"+filename+"_parallel_spin.txt",spindata,'%f')
-    np.savetxt("../data/"+filename+"_parallel_energy.txt",energydata,'%f')
+    dataformat = '_parallel_'+'l'+str(N)+'ts'+str(t)+'r'+str(runs)+'c'+str(cores)
+
+    np.savetxt("../data/"+filename+dataformat+"spin.txt",spindata,'%f')
+    # np.savetxt("../data/"+filename+dataformat+"energy.txt",energydata,'%f')
+
 
     with open("../data/times.txt", "a") as f:
-        f.write(filename+"_parallel"+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
+        f.write(filename+dataformat+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")

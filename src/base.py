@@ -84,6 +84,7 @@ Tend = float(config['Settings']['end T'])
 Tnum = int(config['Settings']['number of T'])
 sspoints = int(config['Settings']['ss points'])
 filename = str(config['Settings']['file name'])
+seedmod = int(config['Settings']['random seed mod'])
 
 Tvals = np.linspace(Tstart,Tend,Tnum)
 
@@ -103,7 +104,7 @@ for j in range(Tnum):
     tenergy = np.zeros(sspoints)
 
     for r in range(runs):
-        spins, energies = isingRun([B,r])
+        spins, energies = isingRun([B,r+1000*seedmod])
         tspins = tspins + spins
         tenergy = tenergy + energies
 
@@ -113,8 +114,11 @@ for j in range(Tnum):
 calctime = time.perf_counter() - tstart
 print(filename,calctime)
 
-np.savetxt("../data/"+filename+"_base_spin.txt",spindata,'%f')
-np.savetxt("../data/"+filename+"_base_energy.txt",energydata,'%f')
+dataformat = '_base_'+'l'+str(N)+'ts'+str(t)+'r'+str(runs)
+
+np.savetxt("../data/"+filename+dataformat+"spin.txt",spindata,'%f')
+# np.savetxt("../data/"+filename+dataformat+"energy.txt",energydata,'%f')
+
 
 with open("../data/times.txt", "a") as f:
-    f.write(filename+"_base"+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
+    f.write(filename+dataformat+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")

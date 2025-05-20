@@ -114,8 +114,11 @@ for j in range(Tnum):
 calctime = time.perf_counter() - tstart
 print(filename,calctime)
 
-np.savetxt("../data/"+filename+"_ngit_spin.txt",spindata,'%f')
-np.savetxt("../data/"+filename+"_ngit_energy.txt",energydata,'%f')
+dataformat = '_ngit_'+'l'+str(N)+'ts'+str(t)+'r'+str(runs)
+
+np.savetxt("../data/"+filename+dataformat+"spin.txt",spindata,'%f')
+# np.savetxt("../data/"+filename+dataformat+"energy.txt",energydata,'%f')
+
 
 with open("../data/times.txt", "a") as f:
-    f.write(filename+"_ngit"+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
+    f.write(filename+dataformat+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")

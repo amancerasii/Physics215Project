@@ -5,7 +5,6 @@ from numba import njit
 import datetime
 import time
 from multiprocessing import Pool
-import os
 import configparser
 
 tstart = time.perf_counter()
@@ -60,6 +59,7 @@ def isingRun(args):
     B = args[0]
     np.random.seed(args[1])
 
+
     # Create Random Negative Lattice
     # init_random = np.random.random((N,N))
     # lattice_n = np.zeros((N,N))
@@ -89,6 +89,8 @@ sspoints = int(config['Settings']['ss points'])
 filename = str(config['Settings']['file name'])
 
 Tvals = np.linspace(Tstart,Tend,Tnum)
+
+rng = np.random.default_rng()  # Uses system random source for seeding
 
 if __name__ == '__main__':
     # tspins = np.zeros(t)
@@ -123,9 +125,12 @@ if __name__ == '__main__':
 
     calctime = time.perf_counter() - tstart
     print(filename,calctime)
+    
+    dataformat = '_ngitparallel_'+'l'+str(N)+'ts'+str(t)+'r'+str(runs)+'c'+str(cores)
 
-    np.savetxt("../data/"+filename+"_ngitparallel_spin.txt",spindata,'%f')
-    np.savetxt("../data/"+filename+"_ngitparallel_energy.txt",energydata,'%f')
+    np.savetxt("../data/"+filename+dataformat+"spin.txt",spindata,'%f')
+    # np.savetxt("../data/"+filename+dataformat+"energy.txt",energydata,'%f')
+
 
     with open("../data/times.txt", "a") as f:
-        f.write(filename+"_ngitparallel"+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
+        f.write(filename+dataformat+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
