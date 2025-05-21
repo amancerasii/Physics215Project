@@ -93,7 +93,7 @@ energydata = np.zeros((sspoints+1,Tnum))
 
 for j in range(Tnum):
     T = Tvals[j]
-    print("T = ",T)
+    #print("T = ",T)
     B = 1/T
 
     spindata[0,j] = T
@@ -111,9 +111,9 @@ for j in range(Tnum):
     energydata[1:,j] = tenergy
 
 calctime = time.perf_counter() - tstart
-print(filename,calctime)
 
 dataformat = '_base_'+'l'+str(N)+'ts'+str(t)+'r'+str(runs)
+print(filename+dataformat,calctime)
 
 np.savetxt("../data/"+filename+dataformat+"spin.txt",spindata,'%f')
 # np.savetxt("../data/"+filename+dataformat+"energy.txt",energydata,'%f')

@@ -10,11 +10,12 @@ config.sections()
 config.read('../config.ini')
 
 # Increasing timesteps
-trials = 1
-tsvals = np.arange(5000,10000,1000)
+trials = 4
+tsvals = np.arange(1000,10500,500)
 
-for trial in range(trials):
+for trial in range(1,trials):
     config['Settings']['file name'] = 't'+str(trial+1)
+    config['Settings']['random seed mod'] = str(trial+1)
 
     with open('../config.ini', 'w') as configfile:
         config.write(configfile)

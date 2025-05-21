@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
     for j in range(Tnum):
         T = Tvals[j]
-        print("T = ",T)
+        #print("T = ",T)
         B = 1/T
 
         spindata[0,j] = T
@@ -118,12 +118,13 @@ if __name__ == '__main__':
             energydata[1:,j] = tenergy
 
     calctime = time.perf_counter() - tstart
-    print(filename,calctime)
-
+    
     dataformat = '_parallel_'+'l'+str(N)+'ts'+str(t)+'r'+str(runs)+'c'+str(cores)
+    print(filename+dataformat,calctime)
 
     np.savetxt("../data/"+filename+dataformat+"spin.txt",spindata,'%f')
     # np.savetxt("../data/"+filename+dataformat+"energy.txt",energydata,'%f')
+
 
 
     with open("../data/times.txt", "a") as f:
