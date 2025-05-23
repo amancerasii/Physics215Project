@@ -58,12 +58,12 @@ def isingRun(args):
     np.random.seed(args[1])
 
      # Create Random Negative Lattice
-    # init_random = np.random.random((N,N))
-    # lattice_n = np.zeros((N,N))
+    init_random = np.random.random((N,N))
+    lattice_n = np.zeros((N,N))
 
-    # lattice_n[init_random >= 0.5] = 1
-    # lattice_n[init_random < 0.5] = -1
-    lattice_n = np.ones((N,N))
+    lattice_n[init_random >= 0.5] = 1
+    lattice_n[init_random < 0.5] = -1
+    # lattice_n = np.ones((N,N))
 
     spins, energies = metropolis(lattice_n, t, B, get_energy(lattice_n),N)
 
@@ -124,8 +124,6 @@ if __name__ == '__main__':
 
     np.savetxt("../data/"+filename+dataformat+"spin.txt",spindata,'%f')
     # np.savetxt("../data/"+filename+dataformat+"energy.txt",energydata,'%f')
-
-
 
     with open("../data/times.txt", "a") as f:
         f.write(filename+dataformat+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")

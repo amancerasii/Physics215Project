@@ -60,12 +60,12 @@ def isingRun(args):
     np.random.seed(args[1])
 
      # Create Random Negative Lattice
-    # init_random = np.random.random((N,N))
-    # lattice_n = np.zeros((N,N))
+    init_random = np.random.random((N,N))
+    lattice_n = np.zeros((N,N))
 
-    # lattice_n[init_random >= 0.5] = 1
-    # lattice_n[init_random < 0.5] = -1
-    lattice_n = np.ones((N,N))
+    lattice_n[init_random >= 0.5] = 1
+    lattice_n[init_random < 0.5] = -1
+    # lattice_n = np.ones((N,N))
 
     spins, energies = metropolis(lattice_n, t, B, get_energy(lattice_n),N)
 
@@ -93,7 +93,7 @@ energydata = np.zeros((sspoints+1,Tnum))
 
 for j in range(Tnum):
     T = Tvals[j]
-    #print("T = ",T)
+    print("T = ",T)
     B = 1/T
 
     spindata[0,j] = T
