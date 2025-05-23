@@ -2,9 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from lattice import Lattice
 import datetime
-# from numba import njit
+from numba import njit
 import time
-from wolff import *
+from njitwolff import *
 import configparser
 from multiprocessing import Pool
 
@@ -51,27 +51,37 @@ Edata = np.zeros((sst+1,Tnum))
 ############################################################
 ############################################################
 
-if __name__ == '__main__':
-    with Pool(cores) as p:
-        args = [[L,tvals[i],h,sst] for i in range(Tnum)]
-        val = p.map(isingrun, args)
 
-    Edata[0,:] = tvals
+for tind in range(Tnum):
+    Edata[0,tind] = tvals[tind]
+    args = [L, tvals[tind], h, sst]
+    Edata[1:,tind] = isingrun(args)
+
+dataformat = '_njit_'+'l'+str(L)+'ts'+str(sst)
+
+
+
+# if __name__ == '__main__':
+#     with Pool(cores) as p:
+#         args = [[L,tvals[i],h,sst] for i in range(Tnum)]
+#         val = p.map(isingrun, args)
+
+#     Edata[0,:] = tvals
     
-    for i in range(len(val)):
-        Edata[1:,i] = val[i]
+#     for i in range(len(val)):
+#         Edata[1:,i] = val[i]
 
-    dataformat = '_njitparallel_'+'l'+str(L)+'ts'+str(sst)
+#     dataformat = '_njitparallel_'+'l'+str(L)+'ts'+str(sst)
 
-    ############################################################
-    ############################################################
+############################################################
+############################################################
 
-    calctime = time.perf_counter() - tstart
-    print("time",calctime)
+calctime = time.perf_counter() - tstart
+print("time",calctime)
 
-    print(filename+dataformat,calctime)
+print(filename+dataformat,calctime)
 
-    np.savetxt("../data/"+filename+dataformat+"energy.txt",Edata,'%f')
+np.savetxt("../data/"+filename+dataformat+"energy.txt",Edata,'%f')
 
-    with open("../data/times.txt", "a") as f:
-        f.write(filename+dataformat+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
+with open("../data/times.txt", "a") as f:
+    f.write(filename+dataformat+"\t"+str(datetime.datetime.now())+"\t"+str(calctime)+"\n")
