@@ -1,70 +1,70 @@
-# Physics215Project
-Git Repository of My Physics 215 Requirement
+# JIT parallel 2D Ising Model
+This is a simple implementation of Numba's JIT compilation and Python's `multiprocessing` parallelization on a 2D Ising model that uses 
 
-Future plans
-- write monte carlo simulation code
-- use multiprocessing package
-- use numba for JIT compilation package
-- compare performance of parallel code
-    - accuracy and simulation time
-        - find an apt simulation time measure
+## Dependencies
+Conda
 
+## Installation
 
-Citing `multiprocess` developers
+1. Create the environment from the environment.yml file:
+    ```
+    conda env create -f environment.yml
+    ```
+2. Activate the environmant
+    ```
+    conda activate 215Project
+    ```
 
-M.M. McKerns, L. Strand, T. Sullivan, A. Fang, M.A.G. Aivazis,
-"Building a framework for predictive science", Proceedings of
-the 10th Python in Science Conference, 2011;
-http://arxiv.org/pdf/1202.1056
+## Setting simulation parameters
+To set the simulation parameters, modify the `config.ini` file in the root directory.
 
-Michael McKerns and Michael Aivazis,
-"pathos: a framework for heterogeneous computing", 2010- ;
-https://uqfoundation.github.io/project/pathos
+### trial number : integer
 
-Ising model with numba integration tutorial
-https://www.youtube.com/watch?v=K--1hlv9yv0&ab_channel=Mr.PSolver
+A number indicating the trial of the run. Each trial number is a unique random seed of the run. Do not change if you want to use the same seed.
 
+### lattice size : integer, multiples of 2
+The square lattice used in the simulation is of this value L. The resulting lattice is a L$\times$L lattice.
 
-Things to implement:
+### start t, end t : float
+The simulation will use temperature values from `start t` to `end t`. The number of points in between is defined by `number of t`.
 
-# Metropolis Runplan up to phase transition diagram
-## Variables
-N - lattice size
-t - number of time steps per run
-r - number of runs (to average over)
-npoints - number of steady state points to average
-B values - \(\beta = 1/k_Bt \)
-## Steps
+### number of t : integer
+The number of temperature points to be simulated
 
+### ss points : integer
+Number of steady state time steps to record. There is a 2000 time step equilibriation implemented before the `ss points` time steps.
 
-# Speed up schemes:
-basic njit
-`@ngit(nopython=True)`
+### cores : integer
+For parallel and njitparallel, the number of CPU cores to be used.
 
-# Standard Test Configuration
-N = 50
-t = 1000000
-runs = 100
-Bvals = 0.44
+## Running the simulation
+The simulation codes are stored in the `/src` folder. Run the specific python code you want. The simulation times are stored in `/data/times.txt` and the data files will be saved in the `/data` folder
 
-# Inputs:
-filename
-N
-t
-T
-Tstart
-Tend
-num T
-runs
-datapoints
+### base
+The base python code without any optimization
+```
+python base.py
+```
 
-# codes
-separate each code
+### njit
+Python code with the Numba JIT compilation
+```
+python njit.py
+```
+### parallel
+Python code with `multiprocessing` parallelism. Make sure you set the proper `cores` value in the `config.ini` file.
 
-ising (base)
-ising_njit
-ising_parallel
-ising_njitparallel
+```
+python parallel.py
+```
 
+### njitparallel
+Python code with both Numba JIT compilation and `multiprocessing` parallelism.
+```
+python njitparallel.py
+```
 
+---
 
+### Testing Results
+Testing results showed improvements in calculation time for all optimization schemes. 

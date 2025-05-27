@@ -40,7 +40,7 @@ Tstart = float(config['Settings']['start T'])
 Tend = float(config['Settings']['end T'])
 Tnum = int(config['Settings']['number of T'])
 sst = int(config['Settings']['ss points'])
-trial = int(config['Settings']['file name'])
+trial = int(config['Settings']['trial number'])
 cores = int(config['Settings']['cores'])
 
 filename = 't'+str(trial)
@@ -61,23 +61,6 @@ for tind in range(Tnum):
     Edata[1:,tind] = isingrun(args)
 
 dataformat = '_njit_'+'l'+str(L)+'ts'+str(sst)
-
-
-
-# if __name__ == '__main__':
-#     with Pool(cores) as p:
-#         args = [[L,tvals[i],h,sst] for i in range(Tnum)]
-#         val = p.map(isingrun, args)
-
-#     Edata[0,:] = tvals
-    
-#     for i in range(len(val)):
-#         Edata[1:,i] = val[i]
-
-#     dataformat = '_njitparallel_'+'l'+str(L)+'ts'+str(sst)
-
-############################################################
-############################################################
 
 calctime = time.perf_counter() - tstart
 print("time",calctime)

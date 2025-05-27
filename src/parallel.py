@@ -40,7 +40,7 @@ Tstart = float(config['Settings']['start T'])
 Tend = float(config['Settings']['end T'])
 Tnum = int(config['Settings']['number of T'])
 sst = int(config['Settings']['ss points'])
-trial = int(config['Settings']['file name'])
+trial = int(config['Settings']['trial number'])
 cores = int(config['Settings']['cores'])
 
 filename = 't'+str(trial)

@@ -34,7 +34,7 @@ def getData(mode,core):
                             and name.find("l"+str(Lvalues[l])) > -1\
                             and name.find("t"+str(t+1)+"_") > -1\
                             and name.find("c"+str(core)) > -1:
-                        print(name, time)
+                        #print(name, time)
                         data[l,t] = float(time)
 
 
@@ -42,7 +42,7 @@ def getData(mode,core):
                     if name.find("_"+mode+"_") > -1 \
                             and name.find("l"+str(Lvalues[l])) > -1\
                             and name.find("t"+str(t+1)) > -1:
-                        print(name, time)
+                        #print(name, time)
                         data[l,t] = float(time)
 
 
@@ -85,6 +85,13 @@ plotData(basedata,"base",color1,"-",".")
 plotData(njitdata,"njit",color1,"--","o")
 plotData(njitparallel5data,"njit parallel (5 cores)",color25,"--","o")
 plotData(parallel5data,"parallel (5 cores)",color25,"-",".")
+
+
+print(1/njitdata)
+print(1/basedata)
+print("njit",np.mean(basedata/njitdata,1))
+print("parallel",np.mean(basedata/parallel5data,1))
+print("njit parallel",np.mean(basedata/njitparallel5data,1))
 
 plt.yscale("log")
 plt.legend()
