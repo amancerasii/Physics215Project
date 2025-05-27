@@ -1,8 +1,7 @@
 import os
 import configparser
 import numpy as np
-
-
+import time
 
 config = configparser.ConfigParser()
 config = configparser.ConfigParser()
@@ -10,25 +9,25 @@ config.sections()
 config.read('../config.ini')
 
 # Increasing timesteps
-trials = 4
-tsvals = np.arange(1000,10500,500)
+tstart = time.perf_counter()
 
-for trial in range(1,trials):
-    config['Settings']['file name'] = 't'+str(trial+1)
-    config['Settings']['random seed mod'] = str(trial+1)
+trials = 3
+Lvals = [2,6,10]
+
+for t in range(trials):
+    config['Settings']['file name'] = str(t+1)
 
     with open('../config.ini', 'w') as configfile:
         config.write(configfile)
 
-    for ts in tsvals:
-        config['Settings']['time steps'] = str(ts)
-        config['Settings']['ss points'] = str(int(ts*0.8))
+    for L in Lvals:
+        config['Settings']['lattice size'] = str(L)
 
         with open('../config.ini', 'w') as configfile:
             config.write(configfile)
 
         os.system('python ../src/base.py')
-        os.system('python ../src/ngit.py')
+        os.system('python ../src/njit.py')
 
         for cores in range(1,6):
             config['Settings']['cores'] = str(cores)
@@ -36,6 +35,7 @@ for trial in range(1,trials):
                 config.write(configfile)
 
             os.system('python ../src/parallel.py')
-            os.system('python ../src/ngit_parallel.py')
-    
-    
+            os.system('python ../src/njitparallel.py')
+ 
+calctime = time.perf_counter() - tstart
+print("total time:",calctime)
