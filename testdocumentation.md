@@ -33,6 +33,7 @@ Due to the overhead of both optimization, shorter simulations will still be quic
 
 ### Parallelization effects
 As expected, increasing the number of cores used in `multiprocessing` improves the speed of the calculations. This is true for both base parallel code (see Figure below):
+
 ![Figure 3](testing/plots/fig02.png)
 
 and also for the njit parallelization code (see Figure below):

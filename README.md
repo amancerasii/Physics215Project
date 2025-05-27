@@ -67,4 +67,4 @@ python njitparallel.py
 ---
 
 ### Testing Results
-Testing results showed improvements in calculation time for all optimization schemes with no loss in accuracy. [detailed report](testdocumentation.md)
+Testing results showed improvements in calculation time for all optimization schemes with no loss in accuracy. See [detailed report](testdocumentation.md).
