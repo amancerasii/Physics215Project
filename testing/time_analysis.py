@@ -127,7 +127,7 @@ plt.legend()
 plt.xlabel("$L$")
 plt.ylabel("$t$ (s)")
 
-plt.savefig("plots/fig02.png")
+plt.savefig("plots/fig03.png")
 
 
 Lvalues = [2,4,6,8,10,12]
@@ -161,7 +161,7 @@ plt.legend()
 plt.xlabel("$L$")
 plt.ylabel("$t$ (s)")
 
-plt.savefig("plots/fig03.png")
+plt.savefig("plots/fig04.png")
 #plt.subplot(1,3,2)
 
 plt.figure()
@@ -177,7 +177,7 @@ plt.legend()
 plt.xlabel("$L$")
 plt.ylabel("$t$ (s)")
 
-plt.savefig("plots/fig04.png")
+plt.savefig("plots/fig05.png")
 
 
 plt.figure()
@@ -193,4 +193,4 @@ plt.legend()
 plt.xlabel("$L$")
 plt.ylabel("$t$ (s)")
 
-plt.savefig("plots/fig05.png")
+plt.savefig("plots/fig06.png")
